@@ -3,15 +3,15 @@
            https://api.github.com/users/<your name>
 */
 
-// axios.get('https://api.github.com/users/e94canales')
-//   .then ( response => {
-//     let userData = response.data
-//     cards.appendChild(createCard(userData))
-//   })
-//   .catch ( error => {
-//     console.log('Theres an error -', error);
+axios.get('https://api.github.com/users/e94canales')
+  .then ( response => {
+    let userData = response.data
+    cards.appendChild(createCard(userData))
+  })
+  .catch ( error => {
+    console.log('Theres an error -', error);
     
-//   })
+  })
 
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
@@ -34,21 +34,38 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = ['e94canales', 'JHaydenDev', 'Ladrillo', 'bigknell', 'justsml', 'luishrd'];
+// const followersArray = ['e94canales', 'JHaydenDev', 'Ladrillo', 'bigknell', 'justsml', 'luishrd'];
 
-followersArray.forEach(person => {
-  axios.get(`https://api.github.com/users/${person}`)
+
+axios.get('https://api.github.com/users/e94canales/followers')
   .then ( response => {
-    let userData = response.data
-    cards.appendChild(createCard(userData))
-    console.log(response)
+    const followers = response.data    
+    followers.forEach(user => {
+      const username = user.login
+      axios.get(`https://api.github.com/users/${username}`)
+        .then ( response => {
+          const userData = response.data
+          cards.appendChild(createCard(userData))
+        })
+    })
   })
   .catch ( error => {
-    console.log('Theres an error -', error);
-    
+    console.log('Theres an error - ', error)
   })
-})
 
+
+// followersArray.forEach(person => {
+//   axios.get(`https://api.github.com/users/${person}`)
+//   .then ( response => {
+//     let userData = response.data
+//     cards.appendChild(createCard(userData))
+//     console.log(response)
+//   })
+//   .catch ( error => {
+//     console.log('Theres an error -', error);
+    
+//   })
+// })
 
 
 /* Step 3: Create a function that accepts a single object as its only argument,
