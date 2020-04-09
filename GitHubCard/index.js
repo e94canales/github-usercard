@@ -41,6 +41,7 @@ followersArray.forEach(person => {
   .then ( response => {
     let userData = response.data
     cards.appendChild(createCard(userData))
+    console.log(response)
   })
   .catch ( error => {
     console.log('Theres an error -', error);
@@ -84,7 +85,9 @@ function createCard (cardData){
   const profileLink = document.createElement('a')
   const followers = document.createElement('p')
   const following = document.createElement('p')
+  const repo = document.createElement('p')
   const bio = document.createElement('p')
+
 
   // STRUCTURE
 
@@ -94,6 +97,7 @@ function createCard (cardData){
   cardInfo.appendChild(username)
   cardInfo.appendChild(location)
   cardInfo.appendChild(profile)
+  cardInfo.appendChild(repo)
   cardInfo.appendChild(followers)
   cardInfo.appendChild(following)
   cardInfo.appendChild(bio)
@@ -116,6 +120,7 @@ function createCard (cardData){
   followers.textContent = `Followers: ${cardData.followers}`
   following.textContent = `Following: ${cardData.following}`
   bio.textContent = `Bio: ${cardData.bio}`
+  repo.textContent = `Repositories: ${cardData.public_repos}`
 
 
   return card
