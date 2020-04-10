@@ -46,6 +46,7 @@ axios.get('https://api.github.com/users/e94canales/followers')
         .then ( response => {
           const userData = response.data
           cards.appendChild(createCard(userData))
+          cardToggle()
         })
     })
   })
@@ -143,6 +144,10 @@ function createCard (cardData){
   return card
   
 
+}
+gsap.from('img', {opacity: 0, duration: 1, x: -500})
+function cardToggle(){
+  gsap.from('.card', {opacity: 0, duration: 1, x: -500})
 }
 
 // cards.appendChild(createCard(someData))
