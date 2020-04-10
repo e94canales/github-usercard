@@ -49,6 +49,7 @@ axios.get('https://api.github.com/users/e94canales/followers')
           cardToggle()
         })
     })
+    
   })
   .catch ( error => {
     console.log('Theres an error - ', error)
@@ -147,7 +148,7 @@ function createCard (cardData){
 }
 gsap.from('img', {opacity: 0, duration: 1, x: -500})
 function cardToggle(){
-  gsap.from('.card', {opacity: 0, duration: 1, x: -500})
+  // gsap.from('.card', {opacity: 0, duration: .3, x: -50})
 }
 
 // cards.appendChild(createCard(someData))
