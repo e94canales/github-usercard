@@ -3,6 +3,16 @@
            https://api.github.com/users/<your name>
 */
 
+axios.get('https://api.github.com/users/e94canales')
+  .then ( response => {
+    let userData = response.data
+    cards.appendChild(createCard(userData))
+  })
+  .catch ( error => {
+    console.log('Theres an error -', error);
+    
+  })
+
 /* Step 2: Inspect and study the data coming back, this is YOUR 
    github info! You will need to understand the structure of this 
    data in order to use it to build your component function 
@@ -24,7 +34,41 @@
           user, and adding that card to the DOM.
 */
 
-const followersArray = [];
+// const followersArray = ['e94canales', 'JHaydenDev', 'Ladrillo', 'bigknell', 'justsml', 'luishrd'];
+
+
+axios.get('https://api.github.com/users/e94canales/followers')
+  .then ( response => {
+    const followers = response.data    
+    followers.forEach(user => {
+      const username = user.login
+      axios.get(`https://api.github.com/users/${username}`)
+        .then ( response => {
+          const userData = response.data
+          cards.appendChild(createCard(userData))
+          cardToggle()
+        })
+    })
+    
+  })
+  .catch ( error => {
+    console.log('Theres an error - ', error)
+  })
+
+
+// followersArray.forEach(person => {
+//   axios.get(`https://api.github.com/users/${person}`)
+//   .then ( response => {
+//     let userData = response.data
+//     cards.appendChild(createCard(userData))
+//     console.log(response)
+//   })
+//   .catch ( error => {
+//     console.log('Theres an error -', error);
+    
+//   })
+// })
+
 
 /* Step 3: Create a function that accepts a single object as its only argument,
           Using DOM methods and properties, create a component that will return the following DOM element:
@@ -45,6 +89,69 @@ const followersArray = [];
 </div>
 
 */
+const cards = document.querySelector('.cards')
+
+function createCard (cardData){
+  // INIT 
+
+  const card = document.createElement('div')
+  const portrait = document.createElement('img')
+  const cardInfo = document.createElement('div')
+  const name = document.createElement('h3')
+  const username = document.createElement('p')
+  const location = document.createElement('p')
+  const profile = document.createElement('p')
+  const profileLink = document.createElement('a')
+  const followers = document.createElement('p')
+  const following = document.createElement('p')
+  const repo = document.createElement('p')
+  const bio = document.createElement('p')
+
+
+  // STRUCTURE
+
+  card.appendChild(portrait)
+  card.appendChild(cardInfo)
+  cardInfo.appendChild(name)
+  cardInfo.appendChild(username)
+  cardInfo.appendChild(location)
+  cardInfo.appendChild(profile)
+  cardInfo.appendChild(repo)
+  cardInfo.appendChild(followers)
+  cardInfo.appendChild(following)
+  cardInfo.appendChild(bio)
+
+  // CLASSES
+  card.classList.add('card')
+  cardInfo.classList.add('card-info')
+  name.classList.add('name')
+  username.classList.add('username')
+
+  // CONTENTS
+  portrait.src = cardData.avatar_url
+  name.textContent = cardData.name
+  username.textContent = cardData.login
+  location.textContent = `Location: ${cardData.location}`
+  profile.textContent = 'Profile: '
+  profileLink.setAttribute('href', cardData.html_url)
+  profileLink.textContent = cardData.html_url
+  profile.appendChild(profileLink)
+  followers.textContent = `Followers: ${cardData.followers}`
+  following.textContent = `Following: ${cardData.following}`
+  bio.textContent = `Bio: ${cardData.bio}`
+  repo.textContent = `Repositories: ${cardData.public_repos}`
+
+
+  return card
+  
+
+}
+gsap.from('img', {opacity: 0, duration: 1, x: -500})
+function cardToggle(){
+  // gsap.from('.card', {opacity: 0, duration: .3, x: -50})
+}
+
+// cards.appendChild(createCard(someData))
 
 /* List of LS Instructors Github username's: 
   tetondan
